@@ -1,4 +1,4 @@
-package cn.itscloudy.mylc;
+package cn.itscloudy.mylc.hard;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;

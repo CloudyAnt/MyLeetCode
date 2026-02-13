@@ -1,4 +1,4 @@
-package cn.itscloudy.mylc;
+package cn.itscloudy.mylc.hard;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
@@ -7,12 +7,20 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 public class MaxPointsTest {
 
-    MaxPoints maxPoints = new MaxPoints();
+    MaxPoints disjointSet = new MaxPoints();
+    MaxPoints1 minimalHeap = new MaxPoints1();
 
     @ParameterizedTest
     @EnumSource(Case.class)
-    void test(Case cass) {
-        int[] results = maxPoints.maxPoints(cass.grid, cass.queries);
+    void testDisjointSet(Case cass) {
+        int[] results = disjointSet.maxPoints(cass.grid, cass.queries);
+        assertArrayEquals(cass.expectedResults, results);
+    }
+
+    @ParameterizedTest
+    @EnumSource(Case.class)
+    void testMinimalHeap(Case cass) {
+        int[] results = minimalHeap.maxPoints(cass.grid, cass.queries);
         assertArrayEquals(cass.expectedResults, results);
     }
 

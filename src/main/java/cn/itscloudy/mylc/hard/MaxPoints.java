@@ -1,10 +1,11 @@
-package cn.itscloudy.mylc;
+package cn.itscloudy.mylc.hard;
 
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.stream.IntStream;
 
 // LeetCode 2503
+// Solution: Offline query + Disjoint set union(Union-Find)
 public class MaxPoints {
 
     private static final int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};

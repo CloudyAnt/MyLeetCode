@@ -1,4 +1,4 @@
-package cn.itscloudy.mylc;
+package cn.itscloudy.mylc.hard;
 
 // LeetCode 42
 public class TrapWater3D {
