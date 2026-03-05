@@ -1,69 +1,42 @@
 package cn.itscloudy.mylc.hard;
 
-// LeetCode 42
+import java.util.Comparator;
+import java.util.PriorityQueue;
+
 public class TrapWater3D {
+    private static final int[] directions = {-1, 0, 1, 0, -1};
 
     public int trapRainWater(int[][] heightMap) {
-        int n = heightMap.length;
-        int m = heightMap[0].length;
+        if (heightMap.length <= 2 || heightMap[0].length <= 2) {
+            return 0;
+        }
+        int m = heightMap.length;
+        int n = heightMap[0].length;
+        boolean[][] visited = new boolean[m][n];
 
-        int[][] waterHeights = new int[n][m]; // the heights when water was injected
-
-        // init
-        for (int x = 0; x < n; x++) {
-            for (int y = 0; y < m; y++) {
-                if (x == 0 || y == 0 || x == n - 1 || y == m - 1) {
-                    waterHeights[x][y] = heightMap[x][y];
-                } else {
-                    waterHeights[x][y] = -1;
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[2]));
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (i == 0 || j == 0 || i == n - 1 || j == m - 1) {
+                    pq.offer(new int[]{i, j, heightMap[i][j]});
+                    visited[i][j] = true;
                 }
             }
         }
 
-        // calculate
-        for (int x = 1; x < n - 1; x++) {
-            for (int y = 1; y < m - 1; y++) {
-                check(heightMap, waterHeights, x, y);
+        int result = 0 ;
+        while (!pq.isEmpty()) {
+            int[] curr = pq.poll();
+            for (int d = 0; d < 4; d++) {
+                int nx = curr[0] + directions[d];
+                int ny = curr[1] + directions[d + 1];
+                if (nx >= 0 && ny >= 0 && nx < m && ny < n && !visited[nx][ny]) {
+                    result += Math.max(0, curr[2] - heightMap[nx][ny]);
+                    pq.offer(new int[]{nx, ny, Math.max(curr[2], heightMap[nx][ny])});
+                    visited[nx][ny] = true;
+                }
             }
         }
-
-        // summate
-        int totalWater = 0;
-        for (int x = 0; x < n; x++) {
-            for (int y = 0; y < m; y++) {
-                totalWater += Math.max(0, waterHeights[x][y] - heightMap[x][y]);
-            }
-        }
-        return totalWater;
-    }
-
-    public void check(int[][] heightMap, int[][] waterHeights, int x, int y) {
-        int lowestWater = waterHeights[x - 1][y];
-        lowestWater = Math.min(lowestWater, waterHeights[x][y - 1]);
-        if (waterHeights[x + 1][y] != -1) {
-            lowestWater = Math.min(lowestWater, waterHeights[x + 1][y]);
-        }
-        if (waterHeights[x][y + 1] != -1) {
-            lowestWater = Math.min(lowestWater, waterHeights[x][y + 1]);
-        }
-
-        int prevWallHeight = waterHeights[x][y];
-        int currWallHeight = Math.max(heightMap[x][y], lowestWater);
-
-        if (currWallHeight != prevWallHeight) {
-            waterHeights[x][y] = currWallHeight;
-            if (x - 1 > 0) {
-                check(heightMap, waterHeights, x - 1, y);
-            }
-            if (x + 1 < heightMap.length - 1 && waterHeights[x + 1][y] >= 0) {
-                check(heightMap, waterHeights, x + 1, y);
-            }
-            if (y - 1 > 0) {
-                check(heightMap, waterHeights, x, y - 1);
-            }
-            if (y + 1 < heightMap[x].length - 1 && waterHeights[x][y + 1] >= 0) {
-                check(heightMap, waterHeights, x, y + 1);
-            }
-        }
+        return result;
     }
 }

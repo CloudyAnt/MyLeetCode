@@ -8,7 +8,7 @@ import java.util.stream.IntStream;
 // Solution: Offline query + Disjoint set union(Union-Find)
 public class MaxPoints {
 
-    private static final int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+    private static final int[] directions = {-1, 0, 1, 0, -1};
 
     public int[] maxPoints(int[][] grid, int[] queries) {
         int m = grid.length;
@@ -34,20 +34,15 @@ public class MaxPoints {
 
         int[] results = new int[queries.length];
         int cellIdx = 0;
-        for (int i = 0; i < queryIndices.length; i++) {
-            int queryIndex = queryIndices[i];
+        for (int queryIndex : queryIndices) {
             int query = queries[queryIndex];
-            if (i > 0 && query == queries[queryIndices[i - 1]]) {
-                results[queryIndex] = results[queryIndices[i - 1]];
-                continue;
-            }
             for (; cellIdx < totalCells && cells[cellIdx][0] < query; cellIdx++) {
                 int[] cell = cells[cellIdx];
                 int x = cell[1];
                 int y = cell[2];
-                for (int[] direction : directions) {
-                    int nx = x + direction[0];
-                    int ny = y + direction[1];
+                for (int d = 0; d < 4; d++) {
+                    int nx = x + directions[d];
+                    int ny = y + directions[d + 1];
                     if (nx >= 0 && ny >= 0 && nx < m && ny < n) {
                         if (grid[nx][ny] < query) {
                             merge(parent, size, x * n + y, nx * n + ny);
