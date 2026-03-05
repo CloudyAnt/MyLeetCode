@@ -10,14 +10,14 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class NQueueTest {
+class NQueenTest {
 
-    NQueue nQueue = new NQueue();
+    NQueen nQueen = new NQueen();
 
     @ParameterizedTest
     @EnumSource(Case.class)
     void solveNQueens(Case c) {
-        List<List<String>> solutions = nQueue.solveNQueens(c.n);
+        List<List<String>> solutions = nQueen.solveNQueens(c.n);
         assertEquals(c.expectedCount, solutions.size(), "solution count for n=" + c.n);
         for (List<String> solution : solutions) {
             assertValidSolution(solution, c.n);

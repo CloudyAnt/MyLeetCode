@@ -5,7 +5,7 @@ import java.util.List;
 
 // LeetCode 52
 // Solution: Backtracking
-public class NQueue {
+public class NQueen {
 
     public List<List<String>> solveNQueens(int n) {
         boolean[][] board = new boolean[n][n];
